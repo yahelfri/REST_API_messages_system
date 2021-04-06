@@ -3,7 +3,7 @@ import datetime
 
 
 class User(models.Model):
-    _id = models.AutoField(primary_key=True, max_length=200)
+    _id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
