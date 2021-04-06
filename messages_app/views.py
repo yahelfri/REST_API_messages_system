@@ -73,7 +73,7 @@ def get_messages_by_receiver_id(request):
         user = User.objects.get(_id=request.query_params['user_id'])
     except:
         return Response("Couldn't find user with matching ID")
-    messages = Message.objects.filter(sender=user)
+    messages = Message.objects.filter(receiver=user)
     if not messages:
         return Response("User has no received messages")
     serialized = MessagesSerializer(messages, many=True)
