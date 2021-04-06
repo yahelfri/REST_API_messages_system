@@ -99,8 +99,9 @@ def get_unread_messages_by_user_id(request):
 # read message content by ID
 @api_view(['GET'])
 def read_message(request):
-    message = Message.objects.get(id=request.query_params['msg_id'])
-    if not message:
+    try:
+        message = Message.objects.get(id=request.query_params['msg_id'])
+    except:
         return Response('No message with given id')
     message.read = True
     message.save()
