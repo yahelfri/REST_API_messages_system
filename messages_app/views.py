@@ -99,11 +99,11 @@ def get_unread_messages_by_user_id(request):
 # read message content by ID
 @api_view(['GET'])
 def read_message(request):
-    message = Message.objects.filter(read=True, sender_id=request.query_params['msg_id']).order_by('sent_time')[0]
+    message = Message.objects.get(id=request.query_params['msg_id'])
+    if not message:
+        return Response('No message with given id')
     message.read = True
     message.save()
-    if not message:
-        return Response('No sent messages for current user')
     serialized = MessagesSerializer(message, many=False)
     return Response(serialized.data)
 
@@ -117,7 +117,7 @@ def delete_user_messages(request):
         user = User.objects.get(_id=request.query_params['user_id'])
     except:
         return Response("Couldn't find user with matching ID")
-    messages = messages = Message.objects.filter(sender=user)
+    messages = Message.objects.filter(sender=user)
     messages.delete()
     return Response('All ' + user.first_name + '\'s messages successfully deleted')
 
